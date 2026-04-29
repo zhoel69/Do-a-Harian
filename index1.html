@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>Kumpulan Doa</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: radial-gradient(circle at top, #022c22, #000000);
+  color: #d1fae5;
+
+  user-select: none;
+
+  opacity: 1; /* FIX PENTING: jangan 0 */
+}
+
+body.show {
+  opacity: 1;
+  transition: 0.4s ease;
+}
+
+* { -webkit-tap-highlight-color: transparent; }
+
+.container {
+  max-width: 720px;
+  margin: auto;
+  padding: 25px 18px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.header h1 {
+  font-size: 26px;
+  color: #bbf7d0;
+}
+
+.header p {
+  font-size: 13px;
+  color: #6ee7b7;
+}
+
+.card {
+  background: rgba(255,255,255,0.04);
+  border-radius: 20px;
+  padding: 28px 22px;
+  margin-bottom: 22px;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  border: 1px solid rgba(250, 204, 21, 0.15);
+}
+
+.title {
+  text-align: center;
+  font-size: 17px;
+  color: #34d399;
+  margin-bottom: 18px;
+}
+
+.arab {
+  font-family: 'Amiri', serif;
+  font-size: 26px;
+  text-align: center;
+  line-height: 2.1;
+
+  margin-bottom: 10px;   /* 🔥 diperkecil */
+  padding: 0;            /* 🔥 dihapus biar tidak dobel jarak */
+
+  white-space: normal;
+
+  background: linear-gradient(135deg, #facc15, #fde68a, #fbbf24);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.toggle {
+  margin-top: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #6ee7b7;
+}
+
+.arrow {
+  margin-right: 8px;
+  transition: 0.3s;
+}
+
+.content {
+  display: none;
+  margin-top: 14px;
+  font-size: 15px;
+  line-height: 1.9;
+  color: #bbf7d0;
+}
+
+.open .content { display: block; }
+.open .arrow { transform: rotate(90deg); }
+
+.nav {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 35px;
+}
+
+.btn {
+  text-decoration: none;
+  background: rgba(52,211,153,0.15);
+  color: #34d399;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+.menu {
+  margin-top: 25px;
+  padding-left: 10px;
+  border-left: 2px solid rgba(52,211,153,0.3);
+}
+
+.menu a {
+  display: block;
+  padding: 0;              /* hapus padding */
+  margin-bottom: 10px;
+  text-decoration: none;
+
+  background: none;       /* hilangkan tombol */
+  border-radius: 0;
+
+  color: #6ee7b7;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.menu a.active {
+  background: linear-gradient(135deg, #34d399, #6ee7b7);
+  color: #022c22;
+  box-shadow: 0 0 10px rgba(110,231,183,0.6);
+}
+
+.info {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 13px;
+  color: #9ca3af;
+}
+.copy {
+  font-size: 12px;
+  color: #6b7280;
+  opacity: 0.8;
+}
+
+/* =======================
+   LOGIN SYSTEM FIX TOTAL
+======================= */
+#login {
+  position: fixed;
+  inset: 0;
+  display: flex; /* FIX: selalu tampil dulu */
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at top, #022c22, #000000);
+  z-index: 99999;
+}
+
+#login.hide {
+  display: none;
+}
+
+.card-login {
+  width: 78%;
+  max-width: 280px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(250,204,21,0.15);
+  border-radius: 16px;
+  padding: 18px;
+  text-align: center;
+}
+
+input {
+  width: 85%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(110,231,183,0.4);
+  background: transparent;
+  color: #fff;
+  text-align: center;
+  margin-top: 10px;
+}
+
+button {
+  margin-top: 12px;
+  width: 60%;
+  padding: 8px;
+  border: none;
+  border-radius: 10px;
+  background: #34d399;
+  color: #022c22;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.lanjut {
+  display: block;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #6ee7b7;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body oncontextmenu="return false">
+
+<!-- LOGIN -->
+<div id="login">
+  <div class="card-login">
+    <h3>Masukkan PIN</h3>
+    <input type="password" id="pin" placeholder="••••">
+    <button onclick="cekPIN()">Masuk</button>
+    <span class="lanjut" onclick="skipPIN()">➡ Lanjut tanpa PIN</span>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="header">
+  <h1>🌙 Kumpulan Doa 🌙</h1>
+  <p>Scroll perlahan, resapi setiap doa 🤍</p>
+</div>
+
+<div class="card">
+  <div class="title">Sholawat</div>
+  <div class="arab"><div class="arab">اَلصَّلَاةُ وَالسَّلَامُ عَلَيْكَ يَا أَبَتِيْ يَا رَسُولَ اللّٰهِ</div>
+
+<div class="arab">أَعُوذُ بِاللّٰهِ مِنَ الشَّيْطَانِ الرَّجِيْمِ</div>
+
+<div class="arab">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+
+<div class="arab">
+اَللّٰهُمَّ صَلِّ وَسَلِّمْ عَلَى سَيِّدِنَا مُحَمَّدٍ سَيِّدِ الْمُرْسَلِيْنَ<br>
+اَللّٰهُمَّ صَلِّ وَسَلِّمْ عَلَى سَيِّدِنَا مُحَمَّدٍ سَيِّدِ الْمُجَاهِدِيْنَ<br>
+اَللّٰهُمَّ صَلِّ وَسَلِّمْ عَلَى سَيِّدِنَا مُحَمَّدٍ سَيِّدِ الشَّاهِدِيْنَ<br>
+اَللّٰهُمَّ صَلِّ وَسَلِّمْ عَلَى سَيِّدِنَا مُحَمَّدٍ سَيِّدِ الْخَاشِعِيْنَ<br>
+اَللّٰهُمَّ صَلِّ وَسَلِّمْ عَلَى سَيِّدِنَا مُحَمَّدٍ سَيِّدِ الطَّائِعِيْنَ<br>
+اَللّٰهُمَّ صَلِّ وَسَلِّمْ عَلَى سَيِّدِنَا مُحَمَّدٍ سَيِّدِ التَّائِبِيْنَ<br>
+اَللّٰهُمَّ صَلِّ وَسَلِّمْ عَلَى سَيِّدِنَا مُحَمَّدٍ سَيِّدِ الْعَابِدِيْنَ<br>
+اَللّٰهُمَّ صَلِّ وَسَلِّمْ عَلَى سَيِّدِنَا مُحَمَّدٍ سَيِّدِ الْحَامِدِيْنَ<br>
+اَللّٰهُمَّ صَلِّ وَسَلِّمْ عَلَى سَيِّدِنَا مُحَمَّدٍ سَيِّدِ الصَّالِحِيْنَ<br>
+اَللّٰهُمَّ صَلِّ وَسَلِّمْ عَلَى سَيِّدِنَا مُحَمَّدٍ سَيِّدِ السَّاجِدِيْنَ<br>
+اَللّٰهُمَّ صَلِّ وَسَلِّمْ عَلَى سَيِّدِنَا مُحَمَّدٍ سَيِّدِ الْقَائِمِيْنَ<br>
+اَللّٰهُمَّ صَلِّ وَسَلِّمْ عَلَى سَيِّدِنَا مُحَمَّدٍ سَيِّدِ الْمُتَّقِيْنَ<br>
+اَللّٰهُمَّ صَلِّ وَسَلِّمْ عَلَى سَيِّدِنَا مُحَمَّدٍ سَيِّدِ الْمُسْتَغْفِرِيْنَ<br>
+اَللّٰهُمَّ صَلِّ وَسَلِّمْ عَلَى سَيِّدِنَا مُحَمَّدٍ سَيِّدِ النَّادِمِيْنَ<br>
+اَللّٰهُمَّ صَلِّ وَسَلِّمْ عَلَى سَيِّدِنَا مُحَمَّدٍ سَيِّدِ الشَّاكِرِيْنَ<br>
+اَللّٰهُمَّ صَلِّ وَسَلِّمْ عَلَى سَيِّدِنَا مُحَمَّدٍ سَيِّدِ الْحَافِظِيْنَ<br>
+اَللّٰهُمَّ صَلِّ وَسَلِّمْ عَلَى سَيِّدِنَا مُحَمَّدٍ سَيِّدِ الذَّاكِرِيْنَ<br>
+اَللّٰهُمَّ صَلِّ وَسَلِّمْ عَلَى سَيِّدِنَا مُحَمَّدٍ سَيِّدِ الْعَاقِلِيْنَ<br>
+اَللّٰهُمَّ صَلِّ وَسَلِّمْ عَلَى سَيِّدِنَا مُحَمَّدٍ سَيِّدِ الْمُحْسِنِيْنَ<br>
+اَللّٰهُمَّ صَلِّ وَسَلِّمْ عَلَى سَيِّدِنَا مُحَمَّدٍ سَيِّدِ الْأَكْرَمِيْنَ<br>
+اَللّٰهُمَّ صَلِّ وَسَلِّمْ عَلَى سَيِّدِنَا مُحَمَّدٍ سَيِّدِ الْمُنْذِرِيْنَ<br>
+اَللّٰهُمَّ صَلِّ وَسَلِّمْ عَلَى سَيِّدِنَا مُحَمَّدٍ سَيِّدِ الْمُبَشِّرِيْنَ<br>
+اَللّٰهُمَّ صَلِّ وَسَلِّمْ عَلَى سَيِّدِنَا مُحَمَّدٍ سَيِّدِ الطَّيِّبِيْنَ<br>
+اَللّٰهُمَّ صَلِّ وَسَلِّمْ عَلَى سَيِّدِنَا مُحَمَّدٍ سَيِّدِ النَّبِيِّيْنَ<br>
+اَللّٰهُمَّ صَلِّ وَسَلِّمْ عَلَى سَيِّدِنَا مُحَمَّدٍ سَيِّدِ الْعَالَمِيْنَ
+</div>
+
+<div class="arab">
+اَللّٰهُمَّ صَلِّ وَسَلِّمْ وَبَارِكْ عَلَى سَيِّدِنَا مُحَمَّدٍ الْقُرَشِيِّ الْهَاشِمِيِّ<br>
+اَللّٰهُمَّ صَلِّ وَسَلِّمْ عَلَى سَيِّدِنَا مُحَمَّدٍ الْمَدَنِيِّ الْعَرَبِيِّ الْمُكَرَّمِ يَوْمَ الْقِيَامَةِ<br>
+اَللّٰهُمَّ صَلِّ وَسَلِّمْ وَبَارِكْ عَلَى سَيِّدِنَا مُحَمَّدٍ سَيِّدِ أَهْلِ الْجَنَّةِ<br>
+اَللّٰهُمَّ صَلِّ وَسَلِّمْ عَلَى سَيِّدِنَا مُحَمَّدٍ صَاحِبِ الْمَقَامِ الْمَحْمُودِ<br>
+اَللّٰهُمَّ صَلِّ وَسَلِّمْ عَلَى سَيِّدِنَا مُحَمَّدٍ صَاحِبِ الصِّرَاطِ الْمُسْتَقِيْمِ<br>
+اَللّٰهُمَّ صَلِّ وَسَلِّمْ عَلَى سَيِّدِنَا مُحَمَّدٍ أَفْضَلِ الْأَوَّلِيْنَ وَالْآخِرِيْنَ
+</div>
+
+<div class="arab">
+اَللّٰهُمَّ صَلِّ وَسَلِّمْ عَلَى سَيِّدِنَا مُحَمَّدٍ وَعَلَى جَمِيْعِ الْأَنْبِيَاءِ وَالْمُرْسَلِيْنَ<br>
+وَعَلَى جَمِيْعِ الْمَلَائِكَةِ الْمُقَرَّبِيْنَ<br>
+وَعَلَى عِبَادِ اللَّهِ الصَّالِحِيْنَ مِنْ أَهْلِ السَّمَاوَاتِ وَأَهْلِ الْأَرْضِيْنَ<br>
+وَعَلَيْنَا مَعَهُمْ أَجْمَعِيْنَ بِرَحْمَتِكَ يَا أَرْحَمَ الرَّاحِمِيْنَ
+</div>
+
+<div class="arab">
+وَصَلَّى اللّٰهُ عَلَى سَيِّدِنَا مُحَمَّدٍ<br>
+وَعَلَى آلِهِ وَصَحْبِهِ<br>
+وَسَلَّمَ أَجْمَعِيْنَ
+</div>
+
+<div class="arab">
+اللَّهُمَّ صَلِّ عَلَى مَنْ سَمَّيْتَهُ ذَاكِرًا حَبِيبًا وَمُذَكِّرًا مُحَمَّدٌ رَسُولُ اللَّهِ<br>
+اللَّهُمَّ صَلِّ عَلَى مَنْ سَمَّيْتَهُ أَحْمَدَ وَمُحَمَّدَ وَسَيِّدًا مُحَمَّدٌ رَسُولُ اللَّهِ<br>
+اللَّهُمَّ صَلِّ عَلَى مَنْ سَمَّيْتَهُ صَابِرًا نَبِيًّا وَمُرَاقِبًا مُحَمَّدٌ رَسُولُ اللَّهِ<br>
+اللَّهُمَّ صَلِّ عَلَى مَنْ سَمَّيْتَهُ غَالِبًا وَرَحِيمًا وَحَلِيمًا مُحَمَّدٌ رَسُولُ اللَّهِ<br>
+اللَّهُمَّ صَلِّ عَلَى مَنْ سَمَّيْتَهُ عَاقِبًا كَرِيمًا وَحَكِيمًا مُحَمَّدٌ رَسُولُ اللَّهِ<br>
+اللَّهُمَّ صَلِّ عَلَى مَنْ سَمَّيْتَهُ عَدْلًا جَوَّادًا وَمُزَّمِّلًا مُحَمَّدٌ رَسُولُ اللَّهِ<br>
+اللَّهُمَّ صَلِّ عَلَى مَنْ سَمَّيْتَهُ قَاسِمًا مَهْدِيًّا وَهَادِيًا مُحَمَّدٌ رَسُولُ اللَّهِ<br>
+اللَّهُمَّ صَلِّ عَلَى مَنْ سَمَّيْتَهُ شَكُورًا وَحَرِيصًا مُحَمَّدٌ رَسُولُ اللَّهِ<br>
+اللَّهُمَّ صَلِّ عَلَى مَنْ سَمَّيْتَهُ قَائِمًا حَفِيًّا وَعَبْدَ اللَّهِ مُحَمَّدٌ رَسُولُ اللَّهِ<br>
+اللَّهُمَّ صَلِّ عَلَى مَنْ سَمَّيْتَهُ شَاهِدًا بَصِيرًا وَمَهْدِيًّا مُحَمَّدٌ رَسُولُ اللَّهِ<br>
+اللَّهُمَّ صَلِّ عَلَى مَنْ سَمَّيْتَهُ بَاهِيًا نُورًا وَمَكِّيًّا مُحَمَّدٌ رَسُولُ اللَّهِ<br>
+اللَّهُمَّ صَلِّ عَلَى مَنْ سَمَّيْتَهُ شَاكِرًا وَوَلِيًّا وَنَذِيرًا مُحَمَّدٌ رَسُولُ اللَّهِ<br>
+اللَّهُمَّ صَلِّ عَلَى مَنْ سَمَّيْتَهُ طَاهِرًا وَصَفِيًّا وَمُخْتَارًا مُحَمَّدٌ رَسُولُ اللَّهِ<br>
+اللَّهُمَّ صَلِّ عَلَى مَنْ سَمَّيْتَهُ بُرْهَانًا صَحِيحًا وَشَرِيفًا مُحَمَّدٌ رَسُولُ اللَّهِ<br>
+اللَّهُمَّ صَلِّ عَلَى مَنْ سَمَّيْتَهُ مُسْلِمًا رَؤُوفًا رَحِيمًا مُحَمَّدٌ رَسُولُ اللَّهِ<br>
+اللَّهُمَّ صَلِّ عَلَى مَنْ سَمَّيْتَهُ مُؤْمِنًا حَلِيمًا مُحَمَّدٌ رَسُولُ اللَّهِ<br>
+اللَّهُمَّ صَلِّ عَلَى مَنْ سَمَّيْتَهُ قَيِّمًا مَحْمُودًا وَحَامِدًا مُحَمَّدٌ رَسُولُ اللَّهِ<br>
+اللَّهُمَّ صَلِّ عَلَى مَنْ سَمَّيْتَهُ مِصْبَاحًا آمِرًا وَنَاهِيًا مُحَمَّدٌ رَسُولُ اللَّهِ<br><br>
+
+صَلَّى اللَّهُ عَلَيْهِ وَعَلَى آلِهِ وَصَحْبِهِ وَأَزْوَاجِهِ وَذُرِّيَّتِهِ وَآلِ بَيْتِهِ<br>
+وَرَضِيَ اللَّهُ عَنْ كُلِّ الصَّحَابَةِ أَجْمَعِينَ
+</div></div>
+
+  <div class="toggle" onclick="toggleContent(this)">
+    <span class="arrow">▶</span> Lihat Arti
+  </div>
+
+  <div class="content">Salam dan shalawat tercurah kepadamu wahai Rasulullah.<br><br>
+
+Aku berlindung kepada Allah dari setan yang terkutuk.<br>
+Dengan nama Allah Yang Maha Pengasih lagi Maha Penyayang.<br><br>
+
+Ya Allah, limpahkanlah shalawat dan salam kepada junjungan kami Nabi Muhammad ﷺ, pemimpin para rasul.<br>
+Ya Allah, limpahkanlah shalawat dan salam kepada junjungan kami Nabi Muhammad ﷺ, pemimpin para pejuang.<br>
+Ya Allah, limpahkanlah shalawat dan salam kepada junjungan kami Nabi Muhammad ﷺ, pemimpin para saksi.<br>
+Ya Allah, limpahkanlah shalawat dan salam kepada junjungan kami Nabi Muhammad ﷺ, pemimpin orang-orang yang khusyuk.<br>
+Ya Allah, limpahkanlah shalawat dan salam kepada junjungan kami Nabi Muhammad ﷺ, pemimpin orang-orang yang taat.<br>
+Ya Allah, limpahkanlah shalawat dan salam kepada junjungan kami Nabi Muhammad ﷺ, pemimpin orang-orang yang bertaubat.<br>
+Ya Allah, limpahkanlah shalawat dan salam kepada junjungan kami Nabi Muhammad ﷺ, pemimpin orang-orang yang beribadah.<br>
+Ya Allah, limpahkanlah shalawat dan salam kepada junjungan kami Nabi Muhammad ﷺ, pemimpin orang-orang yang memuji.<br>
+Ya Allah, limpahkanlah shalawat dan salam kepada junjungan kami Nabi Muhammad ﷺ, pemimpin orang-orang yang saleh.<br>
+Ya Allah, limpahkanlah shalawat dan salam kepada junjungan kami Nabi Muhammad ﷺ, pemimpin orang-orang yang bersujud.<br>
+Ya Allah, limpahkanlah shalawat dan salam kepada junjungan kami Nabi Muhammad ﷺ, pemimpin orang-orang yang berdiri (dalam ibadah).<br>
+Ya Allah, limpahkanlah shalawat dan salam kepada junjungan kami Nabi Muhammad ﷺ, pemimpin orang-orang yang bertakwa.<br>
+Ya Allah, limpahkanlah shalawat dan salam kepada junjungan kami Nabi Muhammad ﷺ, pemimpin orang-orang yang memohon ampun.<br>
+Ya Allah, limpahkanlah shalawat dan salam kepada junjungan kami Nabi Muhammad ﷺ, pemimpin orang-orang yang menyesal.<br>
+Ya Allah, limpahkanlah shalawat dan salam kepada junjungan kami Nabi Muhammad ﷺ, pemimpin orang-orang yang bersyukur.<br>
+Ya Allah, limpahkanlah shalawat dan salam kepada junjungan kami Nabi Muhammad ﷺ, pemimpin orang-orang yang menjaga.<br>
+Ya Allah, limpahkanlah shalawat dan salam kepada junjungan kami Nabi Muhammad ﷺ, pemimpin orang-orang yang berdzikir.<br>
+Ya Allah, limpahkanlah shalawat dan salam kepada junjungan kami Nabi Muhammad ﷺ, pemimpin orang-orang yang berakal.<br>
+Ya Allah, limpahkanlah shalawat dan salam kepada junjungan kami Nabi Muhammad ﷺ, pemimpin orang-orang yang berbuat baik.<br>
+Ya Allah, limpahkanlah shalawat dan salam kepada junjungan kami Nabi Muhammad ﷺ, pemimpin orang-orang yang mulia.<br>
+Ya Allah, limpahkanlah shalawat dan salam kepada junjungan kami Nabi Muhammad ﷺ, pemimpin para pemberi peringatan.<br>
+Ya Allah, limpahkanlah shalawat dan salam kepada junjungan kami Nabi Muhammad ﷺ, pemimpin para pembawa kabar gembira.<br>
+Ya Allah, limpahkanlah shalawat dan salam kepada junjungan kami Nabi Muhammad ﷺ, pemimpin orang-orang yang baik.<br>
+Ya Allah, limpahkanlah shalawat dan salam kepada junjungan kami Nabi Muhammad ﷺ, pemimpin para nabi.<br>
+Ya Allah, limpahkanlah shalawat dan salam kepada junjungan kami Nabi Muhammad ﷺ, pemimpin seluruh alam.<br><br>
+
+Ya Allah, limpahkan shalawat, salam, dan keberkahan kepada Nabi Muhammad ﷺ dari keturunan Quraisy Bani Hasyim.<br>
+Ya Allah, limpahkan shalawat dan salam kepada Nabi Muhammad ﷺ, Nabi Madinah yang dimuliakan di hari kiamat.<br>
+Ya Allah, limpahkan shalawat, salam, dan keberkahan kepada Nabi Muhammad ﷺ, pemimpin penghuni surga.<br>
+Ya Allah, limpahkan shalawat dan salam kepada Nabi Muhammad ﷺ, pemilik maqam mahmud.<br>
+Ya Allah, limpahkan shalawat dan salam kepada Nabi Muhammad ﷺ, pembawa jalan yang lurus.<br>
+Ya Allah, limpahkan shalawat dan salam kepada Nabi Muhammad ﷺ, sebaik-baik makhluk dari awal hingga akhir.<br><br>
+
+Ya Allah, limpahkan shalawat kepada Nabi Muhammad ﷺ, seluruh nabi dan rasul.<br>
+Dan kepada para malaikat yang dekat kepada-Mu.<br>
+Dan kepada seluruh hamba-Mu yang saleh dari langit dan bumi.<br>
+Dan kepada kami bersama mereka semua, dengan rahmat-Mu wahai Yang Maha Penyayang.<br><br>
+
+Semoga Allah melimpahkan shalawat kepada Nabi Muhammad ﷺ.<br>
+Kepada keluarga dan para sahabatnya.<br>
+Dan memberikan keselamatan kepada mereka semua.</div>
+</div>
+
+<div class="content">
+Ya Allah, limpahkanlah shalawat kepada Nabi Muhammad ﷺ yang Engkau namai sebagai yang selalu berdzikir, kekasih, dan pemberi peringatan.<br>
+Ya Allah, limpahkanlah shalawat kepada Nabi Muhammad ﷺ yang Engkau namai Ahmad, Muhammad, dan pemimpin.<br>
+Ya Allah, limpahkanlah shalawat kepada Nabi Muhammad ﷺ yang sabar, seorang nabi, dan selalu merasa diawasi oleh-Mu.<br>
+Ya Allah, limpahkanlah shalawat kepada Nabi Muhammad ﷺ yang menang, penuh kasih, dan penyantun.<br>
+Ya Allah, limpahkanlah shalawat kepada Nabi Muhammad ﷺ yang penutup, mulia, dan penuh hikmah.<br>
+Ya Allah, limpahkanlah shalawat kepada Nabi Muhammad ﷺ yang adil, dermawan, dan berselimut (dalam ibadah).<br>
+Ya Allah, limpahkanlah shalawat kepada Nabi Muhammad ﷺ yang pembagi, yang diberi petunjuk, dan pemberi petunjuk.<br>
+Ya Allah, limpahkanlah shalawat kepada Nabi Muhammad ﷺ yang banyak bersyukur dan sangat perhatian.<br>
+Ya Allah, limpahkanlah shalawat kepada Nabi Muhammad ﷺ yang tegak dalam ibadah, penuh kasih, dan hamba Allah.<br>
+Ya Allah, limpahkanlah shalawat kepada Nabi Muhammad ﷺ yang menjadi saksi, yang melihat dengan jelas, dan diberi petunjuk.<br>
+Ya Allah, limpahkanlah shalawat kepada Nabi Muhammad ﷺ yang indah, bercahaya, dan berasal dari Makkah.<br>
+Ya Allah, limpahkanlah shalawat kepada Nabi Muhammad ﷺ yang bersyukur, kekasih Allah, dan pemberi peringatan.<br>
+Ya Allah, limpahkanlah shalawat kepada Nabi Muhammad ﷺ yang suci, terpilih, dan pilihan.<br>
+Ya Allah, limpahkanlah shalawat kepada Nabi Muhammad ﷺ yang menjadi bukti yang nyata dan mulia.<br>
+Ya Allah, limpahkanlah shalawat kepada Nabi Muhammad ﷺ yang berserah diri, penuh kasih, dan penyayang.<br>
+Ya Allah, limpahkanlah shalawat kepada Nabi Muhammad ﷺ yang beriman dan penyantun.<br>
+Ya Allah, limpahkanlah shalawat kepada Nabi Muhammad ﷺ yang lurus, terpuji, dan banyak memuji.<br>
+Ya Allah, limpahkanlah shalawat kepada Nabi Muhammad ﷺ yang menjadi pelita, yang memerintah kebaikan dan mencegah kemungkaran.<br><br>
+
+Semoga shalawat tercurah kepada beliau, kepada keluarganya, para sahabatnya, istri-istrinya, keturunannya, dan seluruh أهل بيتnya.<br>
+Dan semoga Allah meridhai seluruh sahabat semuanya.
+</div>
+
+<!-- NAV -->
+<div class="nav" style="justify-content: space-between;">
+  <a href="index.html" class="btn">⬅ Sebelumnya</a>
+  <a href="index2.html" class="btn">Selanjutnya ➡</a>
+</div>
+
+<div class="menu">
+  <a href="index.html">Tawasul</a>
+  <a href="index1.html">Sholawat</a>
+  <a href="index2.html">Hizib Bahr</a>
+  <a href="index3.html">Jaga maksiat hati & pikiran</a>
+  <a href="index4.html">Penjagaan cahaya ilahi</a>
+  <a href="index5.html">Doa Istri</a>
+  <a href="index6.html">Doa Anak</a>
+  <a href="index7.html">Kelapangan rezeki</a>
+  <a href="index8.html">Mahabbah (puncak)</a>
+</div>
+
+<div class="info">
+  <p>Disusun dengan niat ibadah oleh Zulfahmi Afnula</p>
+  <p class="copy">© 2026 • All Rights Reserved</p>
+</div>
+
+</div>
+
+<script>
+
+/* =======================
+   SYSTEM TRUE/FALSE FIX FINAL
+======================= */
+const SYSTEM_LOCK = true; // true = PIN ON | false = langsung masuk
+const PIN_CODE = "aze";
+
+const login = document.getElementById("login");
+const pin = document.getElementById("pin");
+
+function openApp(){
+  login.style.display = "none";
+  document.body.classList.add("show");
+}
+
+function cekPIN(){
+  if(pin.value.trim() === PIN_CODE){
+    openApp();
+  } else {
+    alert("PIN salah");
+    pin.value = "";
+  }
+}
+
+function skipPIN(){
+  openApp();
+}
+
+/* BOOT SAFE */
+window.addEventListener("load", ()=>{
+  if(SYSTEM_LOCK){
+    login.style.display = "flex"; // PIN muncul pasti
+  } else {
+    openApp();
+  }
+});
+
+/* toggle */
+function toggleContent(el){
+  el.parentElement.classList.toggle("open");
+}
+
+/* menu active */
+const links = document.querySelectorAll(".menu a");
+
+let currentPage = window.location.pathname.split("/").pop();
+if (!currentPage || currentPage === "") {
+  currentPage = "index.html";
+}
+
+links.forEach(l => {
+  if (l.getAttribute("href") === currentPage) {
+    l.classList.add("active");
+  }
+});
+
+/* animasi link */
+document.querySelectorAll("a").forEach(a=>{
+  a.addEventListener("click", e=>{
+    const href = a.getAttribute("href");
+    if(href && !href.startsWith("#")){
+      e.preventDefault();
+      document.body.classList.remove("show");
+      setTimeout(()=>location.href = href,300);
+    }
+  });
+});
+
+</script>
+
+</body>
+</html>
