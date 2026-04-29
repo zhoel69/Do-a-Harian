@@ -142,9 +142,14 @@ body.show {
 }
 
 .menu a.active {
-  background: linear-gradient(135deg, #34d399, #6ee7b7);
-  color: #022c22;
-  box-shadow: 0 0 10px rgba(110,231,183,0.6);
+  color: #facc15;
+  font-weight: 600;
+  position: relative;
+}
+
+.menu a.active::before {
+  content: "• ";
+  color: #facc15;
 }
 
 .info {
@@ -446,8 +451,10 @@ function cekPIN(){
   }
 }
 
+// Tombol "Lanjut" → langsung ke halaman berikutnya (NEXT)
+// Bukan buka halaman ini tanpa PIN
 function skipPIN(){
-  openApp();
+  window.location.href = "index2.html";
 }
 
 /* BOOT SAFE */
