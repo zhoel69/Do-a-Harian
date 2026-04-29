@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>Kumpulan Doa</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: radial-gradient(circle at top, #022c22, #000000);
+  color: #d1fae5;
+
+  user-select: none;
+
+  opacity: 1; /* FIX PENTING: jangan 0 */
+}
+
+body.show {
+  opacity: 1;
+  transition: 0.4s ease;
+}
+
+* { -webkit-tap-highlight-color: transparent; }
+
+.container {
+  max-width: 720px;
+  margin: auto;
+  padding: 25px 18px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.header h1 {
+  font-size: 26px;
+  color: #bbf7d0;
+}
+
+.header p {
+  font-size: 13px;
+  color: #6ee7b7;
+}
+
+.card {
+  background: rgba(255,255,255,0.04);
+  border-radius: 20px;
+  padding: 28px 22px;
+  margin-bottom: 22px;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  border: 1px solid rgba(250, 204, 21, 0.15);
+}
+
+.title {
+  text-align: center;
+  font-size: 17px;
+  color: #34d399;
+  margin-bottom: 18px;
+}
+
+.arab {
+  font-family: 'Amiri', serif;
+  font-size: 26px;
+  text-align: center;
+  line-height: 2.1;
+
+  margin-bottom: 10px;   /* 🔥 diperkecil */
+  padding: 0;            /* 🔥 dihapus biar tidak dobel jarak */
+
+  white-space: normal;
+
+  background: linear-gradient(135deg, #facc15, #fde68a, #fbbf24);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.toggle {
+  margin-top: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #6ee7b7;
+}
+
+.arrow {
+  margin-right: 8px;
+  transition: 0.3s;
+}
+
+.content {
+  display: none;
+  margin-top: 14px;
+  font-size: 15px;
+  line-height: 1.9;
+  color: #bbf7d0;
+}
+
+.open .content { display: block; }
+.open .arrow { transform: rotate(90deg); }
+
+.nav {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 35px;
+}
+
+.btn {
+  text-decoration: none;
+  background: rgba(52,211,153,0.15);
+  color: #34d399;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+.menu {
+  margin-top: 25px;
+  padding-left: 10px;
+  border-left: 2px solid rgba(52,211,153,0.3);
+}
+
+.menu a {
+  display: block;
+  padding: 0;              /* hapus padding */
+  margin-bottom: 10px;
+  text-decoration: none;
+
+  background: none;       /* hilangkan tombol */
+  border-radius: 0;
+
+  color: #6ee7b7;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.menu a.active {
+  color: #facc15;
+  font-weight: 600;
+  position: relative;
+}
+
+.menu a.active::before {
+  content: "• ";
+  color: #facc15;
+}
+
+.info {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 13px;
+  color: #9ca3af;
+}
+.copy {
+  font-size: 12px;
+  color: #6b7280;
+  opacity: 0.8;
+}
+
+/* =======================
+   LOGIN SYSTEM FIX TOTAL
+======================= */
+#login {
+  position: fixed;
+  inset: 0;
+  display: flex; /* FIX: selalu tampil dulu */
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at top, #022c22, #000000);
+  z-index: 99999;
+}
+
+#login.hide {
+  display: none;
+}
+
+.card-login {
+  width: 78%;
+  max-width: 280px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(250,204,21,0.15);
+  border-radius: 16px;
+  padding: 18px;
+  text-align: center;
+}
+
+input {
+  width: 85%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(110,231,183,0.4);
+  background: transparent;
+  color: #fff;
+  text-align: center;
+  margin-top: 10px;
+}
+
+button {
+  margin-top: 12px;
+  width: 60%;
+  padding: 8px;
+  border: none;
+  border-radius: 10px;
+  background: #34d399;
+  color: #022c22;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.lanjut {
+  display: block;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #6ee7b7;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body oncontextmenu="return false">
+
+<!-- LOGIN -->
+<div id="login">
+  <div class="card-login">
+    <h3>Masukkan PIN</h3>
+    <input type="password" id="pin" placeholder="••••">
+    <button onclick="cekPIN()">Masuk</button>
+    <span class="lanjut" onclick="skipPIN()">➡ Lanjut tanpa PIN</span>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="header">
+  <h1>🌙 Kumpulan Doa 🌙</h1>
+  <p>Scroll perlahan, resapi setiap doa 🤍</p>
+</div>
+
+<div class="card">
+  <div class="title">Hizib Bahr</div>
+  <div class="arab">أَعُوْذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيْمِ</div>
+
+<div class="arab">
+بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيْمِ، وَبِاللَّهِ أَعْتَصِمُ، وَعَلَيْهِ أَتَوَكَّلُ، وَإِلَيْهِ أُنِيْبُ،<br>
+اللَّهُمَّ إِنِّيْ أَسْأَلُكَ بِنُوْرِ وَجْهِكَ الَّذِيْ أَشْرَقَتْ بِهِ الظُّلُمَاتُ،<br>
+وَبِقُوَّتِكَ الَّتِيْ قَهَرْتَ بِهَا كُلَّ مَخْلُوْقٍ،<br>
+أَنْ تَجْعَلَ هَذَا الْحِزْبَ لِيْ حِرْزًا وَحِصْنًا، وَقُوَّةً فِيْ دِيْنِيْ وَدُنْيَايَ،<br>
+وَأَنْ تَحْفَظَنِيْ بِهِ مِنْ كُلِّ شَرٍّ،<br>
+وَأَنْ تَكُوْنَ عَوْنِيْ وَوَلِيِّيْ،<br>
+إِنَّكَ أَنْتَ الْحَفِيْظُ الْمُعِيْنُ، وَنِعْمَ الْمَوْلَى وَنِعْمَ النَّصِيْرُ
+</div>
+
+<div class="arab">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيْمِ</div>
+
+<div class="arab">
+اللَّهُمَّ يَا عَلِيُّ يَا عَظِيْمُ يَا حَلِيْمُ يَا عَلِيْمُ،<br>
+أَنْتَ رَبِّيْ وَعِلْمُكَ حَسْبِيْ،<br>
+فَنِعْمَ الرَّبُّ رَبِّيْ، وَنِعْمَ الْحَسْبُ حَسْبِيْ،<br>
+تَنْصُرُ مَنْ تَشَاءُ وَأَنْتَ الْعَزِيْزُ الرَّحِيْمُ
+</div>
+
+<div class="arab">نَسْأَلُكَ الْأَمْنَ وَالْعَافِيَةَ فِيْ الدِّيْنِ وَالدُّنْيَا وَالْآخِرَةِ</div>
+
+<div class="arab">
+اللَّهُمَّ اجْعَلْنَا فِيْ جِوَارِكَ، وَفِيْ كَنَفِكَ، وَفِيْ أَمَانِكَ، وَفِيْ حِفْظِكَ، وَفِيْ كَنْزِكَ، وَفِيْ سِتْرِكَ، وَفِيْ كَتْفِكَ،<br>
+مِنْ كُلِّ شَيْطَانٍ وَسُلْطَانٍ، وَإِنْسٍ وَجَانٍّ،<br>
+وَبَرٍّ وَبَحْرٍ، وَشَرْقٍ وَغَرْبٍ، وَجَنُوْبٍ وَشَمَالٍ،<br>
+وَمِنْ فَوْقِنَا وَمِنْ تَحْتِنَا
+</div>
+
+<div class="arab">
+اللَّهُمَّ بَاعِدْ بَيْنَنَا وَبَيْنَهُمْ كَمَا بَاعَدْتَ بَيْنَ الْمَشْرِقِ وَالْمَغْرِبِ،<br>
+إِنَّكَ عَلَى كُلِّ شَيْءٍ قَدِيْرٌ
+</div>
+
+<div class="arab">
+اللَّهُمَّ ارْحَمْنَا بِبَرِّكَ الْبَحْرِيِّ وَبَرِّكَ الْبَرِّيِّ،<br>
+وَارْزُقْنَا الْكَمَالَ وَالتَّسْدِيْدَ،<br>
+وَاعْصِمْنَا بِحَبْلِ الْقُرْآنِ الْمَتِيْنِ،<br>
+وَهَبْ لَنَا مَقَامَ الرُّشْدِ وَالصِّدْقِ وَالْعِصْمَةِ فِيْ الدِّيْنِ وَالدُّنْيَا وَالْآخِرَةِ
+</div>
+
+<div class="arab">
+اللَّهُمَّ سَهِّلْ لَنَا أُمُوْرَنَا مَعَ الرَّاحَةِ لِقُلُوْبِنَا وَأَبْدَانِنَا،<br>
+وَالسَّلَامَةِ وَالْعَافِيَةِ فِيْ دِيْنِنَا وَدُنْيَانَا،<br>
+وَكُنْ لَنَا صَاحِبًا فِيْ سَفَرِنَا، وَخَلِيْفَةً فِي أَهْلِنَا
+</div>
+
+<div class="arab">
+لَا إِلَهَ إِلَّا اللَّهُ الْمَلِكُ الْحَقُّ الْمُبِيْنُ،<br>
+مُحَمَّدٌ رَسُوْلُ اللَّهِ صَادِقُ الْوَعْدِ الْأَمِيْنُ
+</div>
+
+<div class="arab">
+اللَّهُمَّ إِنِّيْ أَسْتَوْدِعُكَ هَذَا الْحِزْبَ،<br>
+فَاجْعَلْهُ لِيْ نُوْرًا وَحِرْزًا وَحِصْنًا،<br>
+وَاحْفَظْنِيْ بِهِ مِنْ كُلِّ سُوْءٍ،<br>
+وَأَنْزِلْ عَلَيَّ سَكِيْنَتَكَ وَرَحْمَتَكَ،<br>
+إِنَّكَ أَنْتَ الْحَفِيْظُ الرَّحِيْمُ
+</div>
+
+<div class="arab">
+اللَّهُمَّ تَقَبَّلْ مِنَّا وَاحْفَظْنَا بِبَرَكَةِ هَذَا الْحِزْبِ،<br>
+وَبِرَحْمَتِكَ يَا أَرْحَمَ الرَّاحِمِيْنَ
+</div>
+
+<div class="arab">حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيْلُ (7x)</div></div>
+
+  <div class="toggle" onclick="toggleContent(this)">
+    <span class="arrow">▶</span> Lihat Arti
+  </div>
+
+  <div class="content">
+Aku berlindung kepada Allah dari setan yang terkutuk.<br><br>
+
+Dengan nama Allah Yang Maha Pengasih lagi Maha Penyayang. Kepada Allah aku berpegang teguh, kepada-Nya aku bertawakal, dan kepada-Nya aku kembali.<br>
+Ya Allah, aku memohon kepada-Mu dengan cahaya wajah-Mu yang menerangi kegelapan.<br>
+Dan dengan kekuatan-Mu yang dengannya Engkau menundukkan seluruh makhluk.<br>
+Jadikanlah hizib ini bagiku sebagai penjaga, benteng, dan kekuatan dalam agamaku dan duniaku.<br>
+Dan lindungilah aku dengannya dari segala keburukan.<br>
+Dan jadilah Engkau penolong dan pelindungku.<br>
+Sesungguhnya Engkau Maha Menjaga lagi Maha Penolong, sebaik-baik Pelindung dan sebaik-baik Penolong.<br><br>
+
+Dengan nama Allah Yang Maha Pengasih lagi Maha Penyayang.<br><br>
+
+Ya Allah, wahai Yang Maha Tinggi, Maha Agung, Maha Penyantun, Maha Mengetahui.<br>
+Engkaulah Tuhanku dan ilmu-Mu cukup bagiku.<br>
+Maka sebaik-baik Tuhan adalah Tuhanku, dan sebaik-baik penolong adalah Engkau.<br>
+Engkau menolong siapa yang Engkau kehendaki, dan Engkau Maha Perkasa lagi Maha Penyayang.<br><br>
+
+Kami memohon kepada-Mu keamanan dan keselamatan dalam agama, dunia, dan akhirat.<br><br>
+
+Ya Allah, jadikanlah kami dalam perlindungan-Mu, dalam penjagaan-Mu, dalam keamanan-Mu, dalam pemeliharaan-Mu.<br>
+Dari segala setan, kekuasaan, manusia, dan jin.<br>
+Dari darat dan laut, timur dan barat, selatan dan utara.<br>
+Dari atas kami dan dari bawah kami.<br><br>
+
+Ya Allah, jauhkanlah antara kami dan mereka sebagaimana Engkau jauhkan antara timur dan barat.<br>
+Sesungguhnya Engkau Maha Kuasa atas segala sesuatu.<br><br>
+
+Ya Allah, rahmatilah kami dengan keberkahan darat dan laut.<br>
+Berilah kami kesempurnaan dan ketepatan.<br>
+Jagalah kami dengan tali Al-Qur’an yang kuat.<br>
+Dan karuniakan kepada kami kedudukan yang benar, kejujuran, dan penjagaan dalam agama, dunia, dan akhirat.<br><br>
+
+Ya Allah, mudahkanlah urusan kami dengan ketenangan hati dan badan.<br>
+Serta keselamatan dalam agama dan dunia kami.<br>
+Dan jadilah Engkau teman dalam perjalanan kami dan penjaga bagi keluarga kami.<br><br>
+
+Tiada Tuhan selain Allah, Raja Yang Maha Benar lagi Maha Nyata.<br>
+Muhammad adalah Rasul Allah yang benar janjinya lagi terpercaya.<br><br>
+
+Ya Allah, aku titipkan hizib ini kepada-Mu.<br>
+Jadikanlah ia cahaya, penjaga, dan benteng bagiku.<br>
+Dan lindungilah aku dengannya dari segala keburukan.<br>
+Turunkan kepadaku ketenangan dan rahmat-Mu.<br>
+Sesungguhnya Engkau Maha Menjaga lagi Maha Penyayang.<br><br>
+
+Ya Allah, terimalah dari kami dan jagalah kami dengan keberkahan hizib ini.<br>
+Dengan rahmat-Mu wahai Yang Maha Penyayang.<br><br>
+
+Cukuplah Allah sebagai penolong kami, dan Dia sebaik-baik pelindung. (7x)
+</div>
+</div>
+
+<!-- NAV -->
+<div class="nav" style="justify-content: space-between;">
+  <a href="index.html" class="btn">⬅ Sebelumnya</a>
+  <a href="index3.html" class="btn">Selanjutnya ➡</a>
+</div>
+
+<div class="menu">
+  <a href="index.html">Tawasul</a>
+  <a href="index1.html">Sholawat</a>
+  <a href="index2.html">Hizib Bahr</a>
+  <a href="index3.html">Jaga maksiat hati & pikiran</a>
+  <a href="index4.html">Penjagaan cahaya ilahi</a>
+  <a href="index5.html">Doa Istri</a>
+  <a href="index6.html">Doa Anak</a>
+  <a href="index7.html">Kelapangan rezeki</a>
+  <a href="index8.html">Mahabbah (puncak)</a>
+</div>
+
+<div class="info">
+  <p>Disusun dengan niat ibadah oleh Zulfahmi Afnula</p>
+  <p class="copy">© 2026 • All Rights Reserved</p>
+</div>
+
+</div>
+
+<script>
+
+/* =======================
+   SYSTEM TRUE/FALSE FIX FINAL
+======================= */
+const SYSTEM_LOCK = false; // true = PIN ON | false = langsung masuk
+const PIN_CODE = "aze";
+
+const login = document.getElementById("login");
+const pin = document.getElementById("pin");
+
+function openApp(){
+  login.style.display = "none";
+  document.body.classList.add("show");
+}
+
+function cekPIN(){
+  if(pin.value.trim() === PIN_CODE){
+    openApp();
+  } else {
+    alert("PIN salah");
+    pin.value = "";
+  }
+}
+
+// Tombol "Lanjut" → langsung ke halaman berikutnya (NEXT)
+// Bukan buka halaman ini tanpa PIN
+function skipPIN(){
+  window.location.href = "index3.html";
+}
+
+/* BOOT SAFE */
+window.addEventListener("load", ()=>{
+  if(SYSTEM_LOCK){
+    login.style.display = "flex"; // PIN muncul pasti
+  } else {
+    openApp();
+  }
+});
+
+/* toggle */
+function toggleContent(el){
+  el.parentElement.classList.toggle("open");
+}
+
+/* menu active */
+const links = document.querySelectorAll(".menu a");
+
+let currentPage = window.location.pathname.split("/").pop();
+if (!currentPage || currentPage === "") {
+  currentPage = "index.html";
+}
+
+links.forEach(l => {
+  if (l.getAttribute("href") === currentPage) {
+    l.classList.add("active");
+  }
+});
+
+/* animasi link */
+document.querySelectorAll("a").forEach(a=>{
+  a.addEventListener("click", e=>{
+    const href = a.getAttribute("href");
+    if(href && !href.startsWith("#")){
+      e.preventDefault();
+      document.body.classList.remove("show");
+      setTimeout(()=>location.href = href,300);
+    }
+  });
+});
+
+</script>
+
+</body>
+</html>
