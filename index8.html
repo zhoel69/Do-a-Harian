@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>Kumpulan Doa</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: radial-gradient(circle at top, #022c22, #000000);
+  color: #d1fae5;
+
+  user-select: none;
+
+  opacity: 1; /* FIX PENTING: jangan 0 */
+}
+
+body.show {
+  opacity: 1;
+  transition: 0.4s ease;
+}
+
+* { -webkit-tap-highlight-color: transparent; }
+
+.container {
+  max-width: 720px;
+  margin: auto;
+  padding: 25px 18px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.header h1 {
+  font-size: 26px;
+  color: #bbf7d0;
+}
+
+.header p {
+  font-size: 13px;
+  color: #6ee7b7;
+}
+
+.card {
+  background: rgba(255,255,255,0.04);
+  border-radius: 20px;
+  padding: 28px 22px;
+  margin-bottom: 22px;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  border: 1px solid rgba(250, 204, 21, 0.15);
+}
+
+.title {
+  text-align: center;
+  font-size: 17px;
+  color: #34d399;
+  margin-bottom: 18px;
+}
+
+.arab {
+  font-family: 'Amiri', serif;
+  font-size: 26px;
+  text-align: center;
+  line-height: 2.1;
+
+  margin-bottom: 10px;   /* 🔥 diperkecil */
+  padding: 0;            /* 🔥 dihapus biar tidak dobel jarak */
+
+  white-space: normal;
+
+  background: linear-gradient(135deg, #facc15, #fde68a, #fbbf24);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.toggle {
+  margin-top: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #6ee7b7;
+}
+
+.arrow {
+  margin-right: 8px;
+  transition: 0.3s;
+}
+
+.content {
+  display: none;
+  margin-top: 14px;
+  font-size: 15px;
+  line-height: 1.9;
+  color: #bbf7d0;
+}
+
+.open .content { display: block; }
+.open .arrow { transform: rotate(90deg); }
+
+.nav {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 35px;
+}
+
+.btn {
+  text-decoration: none;
+  background: rgba(52,211,153,0.15);
+  color: #34d399;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+.menu {
+  margin-top: 25px;
+  padding-left: 10px;
+  border-left: 2px solid rgba(52,211,153,0.3);
+}
+
+.menu a {
+  display: block;
+  padding: 0;              /* hapus padding */
+  margin-bottom: 10px;
+  text-decoration: none;
+
+  background: none;       /* hilangkan tombol */
+  border-radius: 0;
+
+  color: #6ee7b7;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.menu a.active {
+  color: #facc15;
+  font-weight: 600;
+  position: relative;
+}
+
+.menu a.active::before {
+  content: "• ";
+  color: #facc15;
+}
+
+.info {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 13px;
+  color: #9ca3af;
+}
+.copy {
+  font-size: 12px;
+  color: #6b7280;
+  opacity: 0.8;
+}
+
+/* =======================
+   LOGIN SYSTEM FIX TOTAL
+======================= */
+#login {
+  position: fixed;
+  inset: 0;
+  display: flex; /* FIX: selalu tampil dulu */
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at top, #022c22, #000000);
+  z-index: 99999;
+}
+
+#login.hide {
+  display: none;
+}
+
+.card-login {
+  width: 78%;
+  max-width: 280px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(250,204,21,0.15);
+  border-radius: 16px;
+  padding: 18px;
+  text-align: center;
+}
+
+input {
+  width: 85%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(110,231,183,0.4);
+  background: transparent;
+  color: #fff;
+  text-align: center;
+  margin-top: 10px;
+}
+
+button {
+  margin-top: 12px;
+  width: 60%;
+  padding: 8px;
+  border: none;
+  border-radius: 10px;
+  background: #34d399;
+  color: #022c22;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.lanjut {
+  display: block;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #6ee7b7;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body oncontextmenu="return false">
+
+<!-- LOGIN -->
+<div id="login">
+  <div class="card-login">
+    <h3>Masukkan PIN</h3>
+    <input type="password" id="pin" placeholder="••••">
+    <button onclick="cekPIN()">Masuk</button>
+    <span class="lanjut" onclick="skipPIN()">➡ Lanjut tanpa PIN</span>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="header">
+  <h1>🌙 Kumpulan Doa 🌙</h1>
+  <p>Scroll perlahan, resapi setiap doa 🤍</p>
+</div>
+
+<div class="card">
+  <div class="title">Mahabbah (puncak)</div>
+  <div class="arab">أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيْمِ</div>
+
+<div class="arab">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيْمِ</div>
+
+<div class="arab">
+اللَّهُمَّ إِنِّيْ أَسْأَلُكَ بِأَسْمَائِكَ الْحُسْنَى وَصِفَاتِكَ الْعُلْيَا،<br>
+أَنْ تَجْعَلَ هَذِهِ الْمَحَبَّةَ خَيْرًا لِيْ وَبَرَكَةً فِيْ حَيَاتِيْ،<br>
+وَأَنْ تَكُوْنَ سَبَبًا فِيْ كَسْبِ رِضَاكَ، يَا أَرْحَمَ الرَّاحِمِيْنَ
+</div>
+
+<div class="arab">
+اللَّهُمَّ اجْعَلْ وُجُوْهَنَا نَاضِرَةً، وَقُلُوْبَنَا مُنِيْرَةً،<br>
+وَأَجْسَادَنَا صَحِيْحَةً، وَأَنْفَاسَنَا مُطْمَئِنَّةً،<br>
+وَأَعْطِنَا جِسْمًا جَمِيْلًا يَبْقَى نَضِرًا وَمَحْبُوْبًا فِي أَعْيُنِ خَلْقِكَ،<br>
+وَاجْعَلْ لَنَا هَيْبَةً وَوَقَارًا وَقَبُوْلًا، كَمَا جَعَلْتَ لِأَنْبِيَائِكَ وَصَالِحِيْنَكَ،<br>
+وَيَا رَبِّ زِدْنَا جَمَالًا وَكَمَالًا وَنُوْرًا مَعَ كُلِّ نَفَسٍ نَتَنَفَّسُهُ،<br>
+وَاجْعَلْ نُوْرَ الْوَجْهِ وَالْكَرَامَةَ وَالْقُبُوْلَ حَفِيْفًا عَلَيْنَا حَتَّى نَلْقَاكَ
+</div>
+
+<div class="arab">
+حَقًّا حَقًّا يَا حَقُّ، يَا حَيُّ، يَا قَيُّوْمُ، يَا مَلِكُ، يَا قُدُّوْسُ، يَا سَلَامُ،<br>
+يَا مُؤْمِنُ، يَا مُهَيْمِنُ، يَا عَزِيْزُ، يَا جَبَّارُ، يَا مُتَكَبِّرُ،<br>
+يَا خَالِقُ، يَا بَارِئُ، يَا مُصَوِّرُ،<br>
+اجْعَلْ لِيْ نُوْرًا وَمَحَبَّةً فِيْ قُلُوْبِ خَلْقِكَ أَجْمَعِيْنَ،<br>
+وَاجْعَلْهُمْ يَنْظُرُوْنَ إِلَيَّ بِنَظْرَةِ الْمَحَبَّةِ وَالْوِدَادِ،<br>
+بِرَحْمَتِكَ يَا أَرْحَمَ الرَّاحِمِيْنَ
+</div>
+
+<div class="arab">
+اللَّهُمَّ اجْعَلْ نُوْرَ الْمَحَبَّةِ فِيْ وَجْهِيْ، وَاجْعَلْهَا فِيْ قَلْبِيْ،<br>
+وَاجْعَلْهَا فِيْ لِسَانِيْ، وَاجْعَلْهَا فِيْ عَمَلِيْ،<br>
+وَاجْعَلْهَا فِيْ كُلِّ أَحْوَالِيْ،<br>
+بِرَحْمَتِكَ يَا رَبَّ الْعَالَمِيْنَ
+</div>
+
+  <div class="arab">
+بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ<br>
+يَا وَدُودُ يَا جَامِعُ يَا حَكِيمُ، أَلِّفْ بَيْنِي وَبَيْنَ نِيَا كُرْنِيَا بِمَحَبَّتِكَ وَوُدِّكَ وَرَحْمَتِكَ،<br>
+كَمَا أَلَّفْتَ بَيْنَ آدَمَ وَحَوَّاءَ، وَبَيْنَ يُوسُفَ وَزُلَيْخَا، وَبَيْنَ مُحَمَّدٍ وَخَدِيجَةَ،<br>
+بِرَحْمَتِكَ يَا أَرْحَمَ الرَّاحِمِينَ.<br><br>
+
+اللَّهُمَّ يَا وَدُودُ يَا ذَا الْعَرْشِ الْمَجِيدِ، يَا فَعَّالًا لِمَا يُرِيدُ،<br>
+يَا مَنْ قُلُوبُ الْعِبَادِ بِيَدِهِ، اجْعَلْ قَلْبَ نِيَا كُرْنِيَا فِي سَكِينَةٍ وَرَاحَةٍ مَعِي،<br>
+وَازْرَعْ حُبِّي فِي قَلْبِهَا كَمَا زَرَعْتَ حُبَّ يُوسُفَ فِي قَلْبِ زُلَيْخَا،<br>
+اللَّهُمَّ اجْعَلْ ذِكْرِي فِي فِكْرِهَا دَائِمًا، وَاجْعَلْنِي أَقْرَبَ النَّاسِ إِلَى قَلْبِهَا،<br>
+وَاجْعَلْ قَلْبَهَا يَمِيلُ إِلَيَّ، وَاجْعَلْ حُبَّهَا وَشَوْقَهَا لِي وَحْدِي،<br>
+وَاجْعَلْنِي فِي قَلْبِهَا ذِكْرًا لَا يُنْسَى، وَاجْعَلْ قَلْبَهَا لَا يُطِيقُ بُعْدِي، بَلْ يَشْتَاقُ إِلَيَّ،<br>
+اللَّهُمَّ اجْعَلْنِي أَقْرَبَ النَّاسِ إِلَى قَلْبِهَا، وَاجْمَعْ بَيْنِي وَبَيْنَهَا بِمَوَدَّتِكَ وَرَحْمَتِكَ،<br>
+وَاجْعَلْهَا نَصِيبِي فِي الدُّنْيَا وَالْآخِرَةِ إِنْ كَانَ فِي ذَلِكَ خَيْرٌ لِي.<br>
+آمِينَ يَا رَبَّ الْعَالَمِينَ
+</div>
+
+<div class="arab">
+اللَّهُمَّ اجْعَلْ لِي مَكَانًا فِي قَلْبِ نِيَا كُرْنِيَا، وَاجْمَعْ بَيْنِي وَبَيْنَهَا عَلَى خَيْرٍ،<br>
+وَلَا تُفَرِّقْ بَيْنَنَا إِلَّا بِخَيْرٍ،<br>
+وَاجْعَلْ حُبَّنَا فِي رِضَاكَ وَمَعْرِفَتِكَ،<br>
+وَكُنْ لَنَا فِي أَمْرِنَا كَمَا تَقُولُ: كُنْ فَيَكُونُ
+</div>
+
+<div class="arab">
+اللَّهُمَّ اجْعَلْ نُورَكَ فِي قَلْبِي، وَسَكِينَتَكَ فِي نَفْسِي، وَمَهَابَتَكَ فِي وُجُودِي، وَمَحَبَّتَكَ فِي كُلِّ مَنْ يَرَانِي.<br>
+وَثَبِّتْنِي عَلَى ذِكْرِكَ وَشُكْرِكَ وَحُسْنِ عِبَادَتِكَ، وَاجْعَلْنِي مِفْتَاحًا لِلْخَيْرِ وَسَبَبًا لِلسَّكِينَةِ.
+</div>
+
+  <div class="toggle" onclick="toggleContent(this)">
+    <span class="arrow">▶</span> Lihat Arti
+  </div>
+
+  <div class="content">
+Aku berlindung kepada Allah dari setan yang terkutuk.<br>
+Dengan nama Allah Yang Maha Pengasih lagi Maha Penyayang.<br><br>
+
+Ya Allah, aku memohon kepada-Mu dengan nama-nama-Mu yang indah dan sifat-sifat-Mu yang luhur,<br>
+jadikanlah cinta ini kebaikan bagiku dan keberkahan dalam hidupku,<br>
+serta jadikan ia sebagai jalan untuk meraih ridha-Mu, wahai Yang Maha Penyayang.<br><br>
+
+Ya Allah, jadikanlah wajah kami berseri, hati kami bercahaya,<br>
+tubuh kami sehat, dan jiwa kami tenang.<br>
+Anugerahkan kepada kami penampilan yang indah yang tetap bercahaya dan dicintai di mata makhluk-Mu.<br>
+Berikan kami kewibawaan, ketenangan, dan penerimaan,<br>
+sebagaimana Engkau berikan kepada para nabi dan orang-orang saleh.<br>
+Wahai Tuhanku, tambahkanlah kepada kami keindahan, kesempurnaan, dan cahaya di setiap nafas kami,<br>
+dan jadikan cahaya wajah, kemuliaan, dan penerimaan selalu menyertai kami hingga kami bertemu dengan-Mu.<br><br>
+
+Sungguh benar, wahai Yang Maha Benar, wahai Yang Maha Hidup, wahai Yang Maha Berdiri sendiri,<br>
+wahai Raja, wahai Yang Maha Suci, wahai Yang Maha Sejahtera,<br>
+wahai Yang Maha Memberi Keamanan, wahai Yang Maha Memelihara,<br>
+wahai Yang Maha Perkasa, wahai Yang Maha Memaksa, wahai Yang Maha Agung,<br>
+wahai Pencipta, wahai Yang Mengadakan, wahai Yang Membentuk rupa,<br>
+jadikanlah untukku cahaya dan cinta di dalam hati seluruh makhluk-Mu,<br>
+dan jadikan mereka memandangku dengan pandangan kasih dan sayang,<br>
+dengan rahmat-Mu wahai Yang Maha Penyayang.<br><br>
+
+Ya Allah, jadikanlah cahaya cinta pada wajahku, dalam hatiku,<br>
+pada lisanku, pada amal perbuatanku,<br>
+dan dalam seluruh keadaanku,<br>
+dengan rahmat-Mu wahai Tuhan seluruh alam.
+</div>
+
+<div class="content">
+Dengan nama Allah Yang Maha Pengasih lagi Maha Penyayang.<br>
+Wahai Yang Maha Pengasih, Wahai Yang Maha Mengumpulkan, Wahai Yang Maha Bijaksana,<br>
+satukanlah aku dengan Nia Kurnia dalam cinta-Mu, kasih sayang-Mu, dan rahmat-Mu,<br>
+sebagaimana Engkau satukan Adam dan Hawa, Yusuf dan Zulaikha, serta Muhammad ﷺ dan Khadijah.<br>
+Dengan rahmat-Mu, wahai Yang Maha Penyayang.<br><br>
+
+Ya Allah, Wahai Yang Maha Pengasih, Pemilik ‘Arsy yang mulia, Yang Maha Berbuat atas apa yang Dia kehendaki,<br>
+Wahai Dzat yang hati para hamba berada dalam genggaman-Nya,<br>
+jadikanlah hati Nia Kurnia tenang dan nyaman bersamaku,<br>
+tanamkan cintaku di dalam hatinya sebagaimana Engkau tanamkan cinta Yusuf dalam hati Zulaikha.<br>
+Ya Allah, jadikanlah aku selalu hadir dalam pikirannya,<br>
+jadikan aku orang yang paling dekat di hatinya,<br>
+dan condongkan hatinya kepadaku.<br>
+Jadikan cintanya dan rindunya hanya untukku,<br>
+jadikan aku kenangan yang tak terlupakan dalam hatinya,<br>
+dan jadikan ia merindukanku serta tidak mampu jauh dariku.<br>
+Ya Allah, satukan kami dalam kasih sayang dan rahmat-Mu,<br>
+dan jadikanlah dia jodohku di dunia dan akhirat jika itu baik bagiku.<br>
+Aamiin ya Rabbal ‘alamin.
+</div>
+
+<div class="content">
+Ya Allah, jadikanlah aku memiliki tempat di hati Nia Kurnia,<br>
+dan satukanlah aku dengannya dalam kebaikan,<br>
+serta jangan Engkau pisahkan kami kecuali dengan cara yang terbaik.<br>
+Jadikanlah cinta kami berada dalam ridha-Mu dan pengenalan kepada-Mu,<br>
+dan jadilah Engkau penolong dalam urusan kami sebagaimana firman-Mu: “Kun fayakun.”<br>
+</div>
+
+<div class="content">
+Ya Allah, jadikanlah cahaya-Mu di dalam hatiku, ketenangan-Mu dalam jiwaku, kewibawaan-Mu dalam keberadaanku, dan jadikanlah cintaku hadir di hati setiap orang yang melihatku.<br>
+Tetapkanlah aku dalam mengingat-Mu, bersyukur kepada-Mu, dan beribadah dengan sebaik-baiknya, serta jadikanlah aku kunci kebaikan dan sebab hadirnya ketenangan.<br>
+</div>
+
+<!-- NAV -->
+<div class="nav" style="justify-content: space-between;">
+  <a href="index7.html" class="btn">⬅ Sebelumnya</a>
+  <a href="index.html" class="btn">Selesai ✓</a>
+</div>
+
+<div class="menu">
+  <a href="index.html">Tawasul</a>
+  <a href="index1.html">Sholawat</a>
+  <a href="index2.html">Hizib Bahr</a>
+  <a href="index3.html">Jaga maksiat hati & pikiran</a>
+  <a href="index4.html">Penjagaan cahaya ilahi</a>
+  <a href="index5.html">Doa Istri</a>
+  <a href="index6.html">Doa Anak</a>
+  <a href="index7.html">Kelapangan rezeki</a>
+  <a href="index8.html">Mahabbah (puncak)</a>
+</div>
+
+<div class="info">
+  <p>Disusun dengan niat ibadah oleh Zulfahmi Afnula</p>
+  <p class="copy">© 2026 • All Rights Reserved</p>
+</div>
+
+</div>
+
+<script>
+
+/* =======================
+   SYSTEM TRUE/FALSE FIX FINAL
+======================= */
+const SYSTEM_LOCK = false; // true = PIN ON | false = langsung masuk
+const PIN_CODE = "aze";
+
+const login = document.getElementById("login");
+const pin = document.getElementById("pin");
+
+function openApp(){
+  login.style.display = "none";
+  document.body.classList.add("show");
+}
+
+function cekPIN(){
+  if(pin.value.trim() === PIN_CODE){
+    openApp();
+  } else {
+    alert("PIN salah");
+    pin.value = "";
+  }
+}
+
+// Tombol "Lanjut" → langsung ke halaman berikutnya (NEXT)
+// Bukan buka halaman ini tanpa PIN
+function skipPIN(){
+  window.location.href = "index.html";
+}
+
+/* BOOT SAFE */
+window.addEventListener("load", ()=>{
+  if(SYSTEM_LOCK){
+    login.style.display = "flex"; // PIN muncul pasti
+  } else {
+    openApp();
+  }
+});
+
+/* toggle */
+function toggleContent(el){
+  el.parentElement.classList.toggle("open");
+}
+
+/* menu active */
+const links = document.querySelectorAll(".menu a");
+
+let currentPage = window.location.pathname.split("/").pop();
+if (!currentPage || currentPage === "") {
+  currentPage = "index.html";
+}
+
+links.forEach(l => {
+  if (l.getAttribute("href") === currentPage) {
+    l.classList.add("active");
+  }
+});
+
+/* animasi link */
+document.querySelectorAll("a").forEach(a=>{
+  a.addEventListener("click", e=>{
+    const href = a.getAttribute("href");
+    if(href && !href.startsWith("#")){
+      e.preventDefault();
+      document.body.classList.remove("show");
+      setTimeout(()=>location.href = href,300);
+    }
+  });
+});
+
+</script>
+
+</body>
+</html>
+
