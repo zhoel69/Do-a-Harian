@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>Kumpulan Doa</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: radial-gradient(circle at top, #022c22, #000000);
+  color: #d1fae5;
+
+  user-select: none;
+
+  opacity: 1; /* FIX PENTING: jangan 0 */
+}
+
+body.show {
+  opacity: 1;
+  transition: 0.4s ease;
+}
+
+* { -webkit-tap-highlight-color: transparent; }
+
+.container {
+  max-width: 720px;
+  margin: auto;
+  padding: 25px 18px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.header h1 {
+  font-size: 26px;
+  color: #bbf7d0;
+}
+
+.header p {
+  font-size: 13px;
+  color: #6ee7b7;
+}
+
+.card {
+  background: rgba(255,255,255,0.04);
+  border-radius: 20px;
+  padding: 28px 22px;
+  margin-bottom: 22px;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  border: 1px solid rgba(250, 204, 21, 0.15);
+}
+
+.title {
+  text-align: center;
+  font-size: 17px;
+  color: #34d399;
+  margin-bottom: 18px;
+}
+
+.arab {
+  font-family: 'Amiri', serif;
+  font-size: 26px;
+  text-align: center;
+  line-height: 2.1;
+
+  margin-bottom: 10px;   /* 🔥 diperkecil */
+  padding: 0;            /* 🔥 dihapus biar tidak dobel jarak */
+
+  white-space: normal;
+
+  background: linear-gradient(135deg, #facc15, #fde68a, #fbbf24);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.toggle {
+  margin-top: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #6ee7b7;
+}
+
+.arrow {
+  margin-right: 8px;
+  transition: 0.3s;
+}
+
+.content {
+  display: none;
+  margin-top: 14px;
+  font-size: 15px;
+  line-height: 1.9;
+  color: #bbf7d0;
+}
+
+.open .content { display: block; }
+.open .arrow { transform: rotate(90deg); }
+
+.nav {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 35px;
+}
+
+.btn {
+  text-decoration: none;
+  background: rgba(52,211,153,0.15);
+  color: #34d399;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+.menu {
+  margin-top: 25px;
+  padding-left: 10px;
+  border-left: 2px solid rgba(52,211,153,0.3);
+}
+
+.menu a {
+  display: block;
+  padding: 0;              /* hapus padding */
+  margin-bottom: 10px;
+  text-decoration: none;
+
+  background: none;       /* hilangkan tombol */
+  border-radius: 0;
+
+  color: #6ee7b7;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.menu a.active {
+  color: #facc15;
+  font-weight: 600;
+  position: relative;
+}
+
+.menu a.active::before {
+  content: "• ";
+  color: #facc15;
+}
+
+.info {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 13px;
+  color: #9ca3af;
+}
+.copy {
+  font-size: 12px;
+  color: #6b7280;
+  opacity: 0.8;
+}
+
+/* =======================
+   LOGIN SYSTEM FIX TOTAL
+======================= */
+#login {
+  position: fixed;
+  inset: 0;
+  display: flex; /* FIX: selalu tampil dulu */
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at top, #022c22, #000000);
+  z-index: 99999;
+}
+
+#login.hide {
+  display: none;
+}
+
+.card-login {
+  width: 78%;
+  max-width: 280px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(250,204,21,0.15);
+  border-radius: 16px;
+  padding: 18px;
+  text-align: center;
+}
+
+input {
+  width: 85%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(110,231,183,0.4);
+  background: transparent;
+  color: #fff;
+  text-align: center;
+  margin-top: 10px;
+}
+
+button {
+  margin-top: 12px;
+  width: 60%;
+  padding: 8px;
+  border: none;
+  border-radius: 10px;
+  background: #34d399;
+  color: #022c22;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.lanjut {
+  display: block;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #6ee7b7;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body oncontextmenu="return false">
+
+<!-- LOGIN -->
+<div id="login">
+  <div class="card-login">
+    <h3>Masukkan PIN</h3>
+    <input type="password" id="pin" placeholder="••••">
+    <button onclick="cekPIN()">Masuk</button>
+    <span class="lanjut" onclick="skipPIN()">➡ Lanjut tanpa PIN</span>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="header">
+  <h1>🌙 Kumpulan Doa 🌙</h1>
+  <p>Scroll perlahan, resapi setiap doa 🤍</p>
+</div>
+
+<div class="card">
+  <div class="title">Hizib Bahr</div>
+  <div class="arab">
+أَعُوذُ بِاللّٰهِ مِنَ الشَّيْطَانِ الرَّجِيْمِ<br>
+بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيمِ<br><br>
+
+اللَّهُمَّ إِنِّي أَسْأَلُكَ وَأَتَوَجَّهُ إِلَيْكَ بِنَبِيِّكَ مُحَمَّدٍ نَبِيِّ الرَّحْمَةِ،<br>
+يَا مُحَمَّدُ إِنِّي أَتَوَجَّهُ بِكَ إِلَى رَبِّي فِي حَاجَتِي هَذِهِ فَتُقْضَى لِي،<br>
+اللَّهُمَّ شَفِّعْهُ فِيَّ
+</div>
+
+<div class="arab">
+إِلَى حَضْرَةِ النَّبِيِّ الْمُصْطَفَى سَيِّدِنَا وَمَوْلَانَا مُحَمَّدٍ<br>
+(الْفَاتِحَةُ ١X)
+</div>
+
+<div class="arab">
+وَإِلَى حَضْرَةِ مَلَائِكَةِ جِبْرِيلَ وَمِيكَائِيلَ وَإِسْرَافِيلَ وَعِزْرَائِيلَ وَالْمَلَائِكَةِ الْمُقَرَّبِينَ وَالْكَرُوبِيِّينَ، شَيْءٌ لِلَّهِ لَهُمْ<br>
+(الْفَاتِحَةُ ١X)
+</div>
+
+<div class="arab">
+وَإِلَى حَضْرَةِ خُلَفَاءِ الرَّاشِدِينَ: أَبِي بَكْرٍ، وَعُمَرَ، وَعُثْمَانَ، وَعَلِيٍّ، شَيْءٌ لِلَّهِ لَهُمْ<br>
+(الْفَاتِحَةُ ١X)
+</div>
+
+<div class="arab">
+وَإِلَى حَضْرَةِ الشَّيْخِ عَبْدِ الْقَادِرِ الْجَيْلَانِيِّ، شَيْءٌ لِلَّهِ لَهُمْ<br>
+(الْفَاتِحَةُ ١X)
+</div>
+
+<div class="arab">
+وَإِلَى حَضْرَةِ أَئِمَّتِنَا فِي الدِّينِ: الشَّافِعِيِّ، أَبِي حَنِيفَةَ، مَالِكٍ، أَحْمَدَ بْنِ حَنْبَلٍ، شَيْءٌ لِلَّهِ لَهُمْ<br>
+(الْفَاتِحَةُ ١X)
+</div>
+
+<div class="arab">
+وَإِلَى حَضْرَةِ أَوْلِيَاءِ اللَّهِ الصَّالِحِينَ وَالْأَقْطَابِ وَالْأَبْدَالِ وَالْأَوْتَادِ وَالنُّجَبَاءِ، شَيْءٌ لِلَّهِ لَهُمْ<br>
+(الْفَاتِحَةُ ١X)
+</div>
+
+  <div class="toggle" onclick="toggleContent(this)">
+    <span class="arrow">▶</span> Lihat Arti
+  </div>
+
+  <div class="content">
+Aku berlindung kepada Allah dari setan yang terkutuk.<br>
+Dengan nama Allah Yang Maha Pengasih lagi Maha Penyayang.<br><br>
+
+Ya Allah, aku memohon kepada-Mu dan menghadap kepada-Mu dengan perantaraan Nabi-Mu Muhammad ﷺ, Nabi pembawa rahmat.<br>
+Wahai Muhammad, aku menghadap dengan perantaraanmu kepada Tuhanku dalam hajatku ini agar dikabulkan untukku.<br>
+Ya Allah, jadikanlah beliau sebagai pemberi syafaat bagiku.
+</div>
+
+<div class="content">
+Kepada Nabi pilihan, junjungan kami Muhammad ﷺ.<br>
+(Al-Fatihah 1x)<br><br>
+
+Kepada para malaikat: Jibril, Mikail, Israfil, Izrail, serta malaikat yang dekat kepada Allah dan para karubiyyin.<br>
+(Al-Fatihah 1x)<br><br>
+
+Kepada para Khulafaur Rasyidin: Abu Bakar, Umar, Utsman, dan Ali.<br>
+(Al-Fatihah 1x)<br><br>
+
+Kepada Syekh Abdul Qadir al-Jailani.<br>
+(Al-Fatihah 1x)<br><br>
+
+Kepada para imam dalam agama: Syafi’i, Abu Hanifah, Malik, dan Ahmad bin Hanbal.<br>
+(Al-Fatihah 1x)<br><br>
+
+Kepada para wali Allah yang saleh, para qutub, abdal, autad, dan nujaba.<br>
+(Al-Fatihah 1x)
+</div>
+
+<div class="nav">
+  <a href="index1.html" class="btn">Selanjutnya ➡</a>
+</div>
+
+<div class="menu">
+  <a href="index.html" class="active">Tawasul</a>
+  <a href="index1.html">Sholawat</a>
+  <a href="index2.html">Hizib Bahr</a>
+  <a href="index3.html">Jaga maksiat hati & pikiran</a>
+  <a href="index4.html">Penjagaan cahaya ilahi</a>
+  <a href="index5.html">Doa Istri</a>
+  <a href="index6.html">Doa Anak</a>
+  <a href="index7.html">Kelapangan rezeki</a>
+  <a href="index8.html">Mahabbah (puncak)</a>
+</div>
+
+<div class="info">
+  <p>Disusun dengan niat ibadah oleh Zulfahmi Afnula</p>
+  <p class="copy">© 2026 • All Rights Reserved</p>
+</div>
+
+</div>
+
+<script>
+
+/* =======================
+   SYSTEM TRUE/FALSE FIX FINAL
+======================= */
+const SYSTEM_LOCK = false; // true = PIN ON | false = langsung masuk
+const PIN_CODE = "aze";
+
+const login = document.getElementById("login");
+const pin = document.getElementById("pin");
+
+function openApp(){
+  login.style.display = "none";
+  document.body.classList.add("show");
+}
+
+function cekPIN(){
+  if(pin.value.trim() === PIN_CODE){
+    openApp();
+  } else {
+    alert("PIN salah");
+    pin.value = "";
+  }
+}
+
+// Tombol "Lanjut" → langsung ke halaman berikutnya (NEXT)
+// Bukan buka halaman ini tanpa PIN
+function skipPIN(){
+  window.location.href = "index1.html";
+}
+
+/* BOOT SAFE */
+window.addEventListener("load", ()=>{
+  if(SYSTEM_LOCK){
+    login.style.display = "flex"; // PIN muncul pasti
+  } else {
+    openApp();
+  }
+});
+
+/* toggle */
+function toggleContent(el){
+  el.parentElement.classList.toggle("open");
+}
+
+/* menu active */
+const links = document.querySelectorAll(".menu a");
+
+let currentPage = window.location.pathname.split("/").pop();
+if (!currentPage || currentPage === "") {
+  currentPage = "index.html";
+}
+
+links.forEach(l => {
+  if (l.getAttribute("href") === currentPage) {
+    l.classList.add("active");
+  }
+});
+
+/* animasi link */
+document.querySelectorAll("a").forEach(a=>{
+  a.addEventListener("click", e=>{
+    const href = a.getAttribute("href");
+    if(href && !href.startsWith("#")){
+      e.preventDefault();
+      document.body.classList.remove("show");
+      setTimeout(()=>location.href = href,300);
+    }
+  });
+});
+
+</script>
+
+</body>
+</html>
